@@ -16,7 +16,7 @@ def pascal_triangle(n):
     while i < n:
         for j in range(1, len(final_triangle[i - 1])):
             final_triangle[i][j] = \
-            final_triangle[i - 1][j] + \
-            final_triangle[i - 1][j - 1]
+                final_triangle[i - 1][j] + \
+                final_triangle[i - 1][j - 1]
         i += 1
     return final_triangle
