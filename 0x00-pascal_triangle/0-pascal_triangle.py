@@ -4,21 +4,17 @@
 """
 
 
-def pascal_triangle(n):
+def pascal_triangle(n: int) -> list[list[int]]:
     """
         returns a lis of lists of integers
         Args:
             n (int): number of lists and digits
         Returns: list of lists
     """
-    t_row = [1]
-    temp_l = [0]
-    pTri = []
-
-    if n <= 0:
-        return pTri
-
-    for i in range(n):
-        pTri.append(t_row)
-        t_row = [l+r for l, r in zip(t_row + temp_l, temp_l + t_row)]
-    return pTri
+    start_triangle = [[1] * i for i in range(1, n + 1)]
+    i = 1
+    while i < n:
+        for j in range(1, len(start_triangle[i - 1])):
+            start_triangle[i][j] = start_triangle[i - 1][j] + start_triangle[i - 1][j - 1]
+        i += 1
+    return start_triangle
