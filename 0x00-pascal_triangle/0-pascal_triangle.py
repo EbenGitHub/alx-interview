@@ -15,6 +15,8 @@ def pascal_triangle(n):
     i = 1
     while i < n:
         for j in range(1, len(start_triangle[i - 1])):
-            start_triangle[i][j] = start_triangle[i - 1][j] + start_triangle[i - 1][j - 1]
+            start_triangle[i][j] = \
+            start_triangle[i - 1][j] + \
+            start_triangle[i - 1][j - 1]
         i += 1
     return start_triangle
