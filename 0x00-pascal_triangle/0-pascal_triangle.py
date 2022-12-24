@@ -4,7 +4,7 @@
 """
 
 
-def pascal_triangle(n: int) -> list[list[int]]:
+def pascal_triangle(n):
     """
         returns a lis of lists of integers
         Args:
