@@ -12,12 +12,12 @@ def canUnlockAll(boxes):
         Returns: boolean
     """
     unlockable = True
+    keys = {0}
     for box in boxes:
-        keys = [0]
         index = boxes.index(box)
-        for i in range(len(boxes)):
-            if index != i:
-                for key in boxes[i]:
-                    keys.append(key)
         unlockable = unlockable and (index in keys)
+        for key in box:
+            keys.add(key)
+            for other_key in boxes[key]:
+                keys.add(other_key)
     return unlockable
