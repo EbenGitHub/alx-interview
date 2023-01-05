@@ -11,6 +11,7 @@ def canUnlockAll(boxes):
             boxes (list): boxes which may have keys to other boxes
         Returns: boolean
     """
+    unlockable = True
     for box in boxes:
         keys = [0]
         index = boxes.index(box)
@@ -18,5 +19,5 @@ def canUnlockAll(boxes):
             if index != i:
                 for key in boxes[i]:
                     keys.append(key)
-        unlockable = True and (index in keys)
+        unlockable = unlockable and (index in keys)
     return unlockable
