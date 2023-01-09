@@ -40,7 +40,7 @@ def minOperations(n):
         Returns: the number of operations done
     """
     h = 'H'
-    current = len(h)
+    current = None
     operation = 0
     while True:
         if n == len(h):
