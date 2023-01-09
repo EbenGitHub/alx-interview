@@ -47,7 +47,7 @@ def minOperations(n):
             return operation
         elif n < len(h):
             return 0
-        if n < 2 * len(h):
+        if n % len(h) != 0:
             (h, operation) = paste_(h, current, operation)
         else:
             (current, operation) = copy_all(h, current, operation)
