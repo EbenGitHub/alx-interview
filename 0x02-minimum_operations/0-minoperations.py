@@ -45,6 +45,8 @@ def minOperations(n):
     current = None
     operation = 0
     while True:
+        if operation == n:
+            return 0
         if n == len(h):
             return operation
         elif n < len(h):
