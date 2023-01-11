@@ -39,14 +39,10 @@ def minOperations(n):
             n: number of times for 'H'
         Returns: the number of operations done
     """
-    if type(n) != int:
-        return 0
     h = 'H'
     current = None
     operation = 0
     while True:
-        if operation == n:
-            return 0
         if n == len(h):
             return operation
         elif n < len(h):
