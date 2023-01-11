@@ -39,6 +39,8 @@ def minOperations(n):
             n: number of times for 'H'
         Returns: the number of operations done
     """
+    if type(n) != int:
+        return 0
     h = 'H'
     current = None
     operation = 0
