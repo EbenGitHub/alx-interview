@@ -34,7 +34,7 @@ try:
                     status_code = int(status_code)
                     if status_code in status_lists:
                         status_counter[status_code] += 1
-                        line_counter += 1
+                    line_counter += 1
                     if line_counter == 10:
                         print_mssg()
                         line_counter = 0                        
