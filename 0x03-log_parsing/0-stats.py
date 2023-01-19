@@ -1,37 +1,41 @@
+#!/usr/bin/python3
+"""Log Parsing for parsing sys inputs using sys stdout and sys stdin"""
+
 import sys
 import re
 
-test = re.search('(\d+.\d+.\d+.\d+) - .+ (\d{3}) (\d+)$', '14.193.229.164 - [2023-01-19 21:35:13.589212] "GET /projects/260 HTTP/1.1" 200 395')
-IP = None
-STATUS = None
-FILE = None
-TOTALFILE = 0
-STATUSLIST = [200, 301, 400, 401, 403, 404, 405, 500]
-STATUSCOUNTER = {}
+ip = None
+status_code = None
+file_size = None
+total_file_size = 0
+status_lists = [200, 301, 400, 401, 403, 404, 405, 500]
+status_counter = {}
 
-for status in STATUSLIST:
-    STATUSCOUNTER[status] = 0
+for status in status_lists:
+    status_counter[status] = 0
 
 def PRINTMSSG():
-    sys.stdout.write('File size: {}'.format(TOTALFILE))
-    for status in STATUSCOUNTER:
-        if STATUSCOUNTER[status] != 0:
-            sys.stdout.write('{}: {}'.format(status, STATUSCOUNTER[status]))
+    sys.stdout.write('File size: {}\n'.format(total_file_size))
+    for status in status_counter:
+        if status_counter[status] != 0:
+            sys.stdout.write('{}: {}\n'.format(status, status_counter[status]))
 
-for line in sys.stdin:
-    LINECOUNT = 0
-    try:
-        regex = re.search('(\d+.\d+.\d+.\d+) - .+ (\d{3}) (\d+)$', '14.193.229.164 - [2023-01-19 21:35:13.589212] "GET /projects/260 HTTP/1.1" 200 395')
-        (IP, STATUS, FILE) = regex.group(1), regex.group(2), regex.group(3)
-        if None not in (IP, STATUS, FILE):
-            TOTALFILE += int(FILE)
-            if STATUS in STATUSLIST:
-                STATUSCOUNTER[STATUS] += 1
-        if LINECOUNT == 10:
-            PRINTMSSG()
-            LINECOUNT = 0
-        else:
-            LINECOUNT += 1
-    except KeyboardInterrupt:
-        PRINTMSSG()
-        break
+try:
+    line_counter = 1
+    for line in sys.stdin:
+        if line:
+            regex = re.search('(\d+.\d+.\d+.\d+) - .+ (\d{3}) (\d+)$', line)
+            if regex:
+                (ip, status_code, file_size) = regex.group(1), regex.group(2), regex.group(3)
+                if None not in (ip, status_code, file_size):
+                    total_file_size += int(file_size)
+                    status_code = int(status_code)
+                    if status_code in status_lists:
+                        status_counter[status_code] += 1
+                    if line_counter == 10:
+                        PRINTMSSG()
+                        line_counter = 1
+                    else:
+                        line_counter += 1
+except KeyboardInterrupt:
+    PRINTMSSG()
