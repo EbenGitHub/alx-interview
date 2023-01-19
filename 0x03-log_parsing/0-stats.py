@@ -4,9 +4,6 @@
 import sys
 import re
 
-ip = None
-status_code = None
-file_size = None
 total_file_size = 0
 status_lists = [200, 301, 400, 401, 403, 404, 405, 500]
 status_counter = {}
@@ -24,7 +21,7 @@ def print_mssg():
 
 
 try:
-    line_counter = 1
+    line_counter = 0
     for line in sys.stdin:
         if line:
             regex_result = regex.search(line)
@@ -37,11 +34,10 @@ try:
                     status_code = int(status_code)
                     if status_code in status_lists:
                         status_counter[status_code] += 1
+                        line_counter += 1
                     if line_counter == 10:
                         print_mssg()
-                        line_counter = 1
-                    else:
-                        line_counter += 1
+                        line_counter = 0                        
             regex_result = None
 except KeyboardInterrupt:
     print_mssg()
