@@ -41,3 +41,6 @@ try:
             regex_result = None
 except KeyboardInterrupt:
     print_mssg()
+
+finally:
+    print_mssg()
