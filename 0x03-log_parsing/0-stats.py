@@ -1,51 +1,37 @@
 #!/usr/bin/python3
-""" Log Parsing for parsing sys inputs using sys stdout and sys stdin """
+'''a script that reads stdin line by line and computes metrics'''
+
 
 import sys
-import re
 
-total_file_size = 0
-status_lists = [200, 301, 400, 401, 403, 404, 405, 500]
-status_counter = {}
-regex = re.compile(r'(\d+.\d+.\d+.\d+) - .+ (\d{3}) (\d+)$')
-
-for status in status_lists:
-    status_counter[status] = 0
-
-
-def print_mssg():
-    """
-    Print the total file size and status codes
-        : File Size <>
-        : Status code
-    """
-    sys.stdout.write('File size: {}\n'.format(total_file_size))
-    for status in status_counter:
-        if status_counter[status] != 0:
-            sys.stdout.write('{}: {}\n'.format(status, status_counter[status]))
-
+cache = {'200': 0, '301': 0, '400': 0, '401': 0,
+         '403': 0, '404': 0, '405': 0, '500': 0}
+total_size = 0
+counter = 0
 
 try:
-    line_counter = 0
     for line in sys.stdin:
-        if line:
-            regex_result = regex.search(line)
-            if regex_result:
-                (ip, status_code, file_size) = \
-                    regex_result.group(1), regex_result.group(2), \
-                    regex_result.group(3)
-                if None not in (ip, status_code, file_size):
-                    total_file_size += int(file_size)
-                    status_code = int(status_code)
-                    if status_code in status_lists:
-                        status_counter[status_code] += 1
-                    line_counter += 1
-                    if line_counter == 10:
-                        print_mssg()
-                        line_counter = 0
-            regex_result = None
-except KeyboardInterrupt:
-    print_mssg()
+        line_list = line.split(" ")
+        if len(line_list) > 4:
+            code = line_list[-2]
+            size = int(line_list[-1])
+            if code in cache.keys():
+                cache[code] += 1
+            total_size += size
+            counter += 1
+
+        if counter == 10:
+            counter = 0
+            print('File size: {}'.format(total_size))
+            for key, value in sorted(cache.items()):
+                if value != 0:
+                    print('{}: {}'.format(key, value))
+
+except Exception as err:
+    pass
 
 finally:
-    print_mssg()
+    print('File size: {}'.format(total_size))
+    for key, value in sorted(cache.items()):
+        if value != 0:
+            print('{}: {}'.format(key, value))
