@@ -14,10 +14,12 @@ for status in status_lists:
 
 
 def print_mssg():
-    sys.stdout.write('File size: {}\n'.format(total_file_size))
+    #sys.stdout.write('File size: {}\n'.format(total_file_size))
+    print(f'File size: {total_file_size}')
     for status in status_counter:
         if status_counter[status] != 0:
-            sys.stdout.write('{}: {}\n'.format(status, status_counter[status]))
+            #sys.stdout.write('{}: {}\n'.format(status, status_counter[status]))
+            print(f'{status}: {status_counter[status]}')
 
 
 try:
