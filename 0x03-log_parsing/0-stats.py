@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Log Parsing for parsing sys inputs using sys stdout and sys stdin"""
+""" Log Parsing for parsing sys inputs using sys stdout and sys stdin """
 
 import sys
 import re
