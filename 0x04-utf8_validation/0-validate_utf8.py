@@ -93,8 +93,8 @@ def validUTF8(data):
         if j == 1 or j > 4 or k >= len(data):
             return False
         while i < len(data) and i <= k:
-            cur = check(data[i])
-            if cur != 1:
+            curnt = check(data[i])
+            if curnt != 1:
                 return False
             i += 1
     return True
