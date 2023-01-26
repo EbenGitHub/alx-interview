@@ -78,9 +78,9 @@ def validUTF8(data):
     """
 
     def check(num):
-        mask = 1 << (8 - 1)  # 10000000
+        mask = 1 << (8 - 1)  # 10000000(128)
         i = 0
-        while num & mask:  # 11000110 & 100000
+        while num & mask:  # 11000110(198) & 10000000(128)
             mask >>= 1
             i += 1
         return i
