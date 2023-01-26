@@ -31,14 +31,14 @@ def validUTF8(data):
 
         x denotes a bit in the binary form of a byte that may be either 0 or 1.
 
-        -- Leader byte for a single-byte sequence is always in the range (0-127)
-        -- Leader byte for a two-byte sequence is in the range (194-223)
-        -- Leader byte for a three-byte sequence is in the range (224-239)
-        -- Leader byte for a four-byte sequence is in the range (240-247)
+        -- Leader byte for a single-byte sequence is always in the range(0-127)
+        -- Leader byte for a two-byte sequence is in the range(194-223)
+        -- Leader byte for a three-byte sequence is in the range(224-239)
+        -- Leader byte for a four-byte sequence is in the range(240-247)
 
-        -- Trailing byte for a two-byte sequence are in the range (128-191)
-        -- Trailing byte for a three-byte sequence are in the range (128-191)
-        -- Trailing byte for a four-byte sequence are in the range (128-191)
+        -- Trailing byte for a two-byte sequence are in the range(128-191)
+        -- Trailing byte for a three-byte sequence are in the range(128-191)
+        -- Trailing byte for a four-byte sequence are in the range(128-191)
 
             [         xxxxxxx         xxxxxxxx           xxxxxxx       ]
                     leader byte     trailing byte     trailing byte
