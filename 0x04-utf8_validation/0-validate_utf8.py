@@ -45,6 +45,16 @@ def validUTF8(data):
             [         xxxxxxx         xxxxxxxx           xxxxxxx       ]
                     leader byte     trailing byte     trailing byte
 
+        _____________________________________________________________________
+        |  Number of Bytes   |        UTF-8 Octet Sequence                  |
+        |                    |              (integer)                       |
+        |--------------------+-----------------------------------------     |
+        |         1          |   (0-127)                                    |
+        |         2          |   (194-223) (128-191)                        |
+        |         3          |   (224-239) (128-191) (128-191)              |
+        |         4          |   (240-247) (128-191) (128-191) (128-191)    |
+        |___________________________________________________________________|
+
         You can calculate the code point value of a character by looking
         at the leader byte and the trailing bytes. For a single-byte sequence,
         the code point value is equal to the value of the leader byte.
