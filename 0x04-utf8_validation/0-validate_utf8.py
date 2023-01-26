@@ -42,6 +42,27 @@ def validUTF8(data):
 
             [         xxxxxxx         xxxxxxxx           xxxxxxx       ]
                     leader byte     trailing byte     trailing byte
+
+        You can calculate the code point value of a character by looking
+        at the leader byte and the trailing bytes. For a single-byte sequence,
+        the code point value is equal to the value of the leader byte.
+
+        For a two-byte sequence,
+        the code point value is equal to
+            ((leader byte - 194) * 64) + (trailing byte - 128).
+
+        For a three-byte sequence,
+        the code point value is equal to
+            ((leader byte - 224) * 4096) +
+            ((trailing byte1 - 128) * 64) +
+            (trailing byte2 - 128).
+
+        For a four-byte sequence,
+        the code point value is equal to
+            ((leader byte - 240) * 262144) +
+            ((trailing byte1 - 128) * 4096) +
+            ((trailing byte2 - 128) * 64) +
+            (trailing byte3 - 128).
     """
 
     def check(num):
