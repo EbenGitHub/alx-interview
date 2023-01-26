@@ -1,32 +1,51 @@
 #!/usr/bin/python3
 """
-    This function validates whether or not a given byte of input
-    is valid or not.
+    UTF-8-validation:
+    Given an integer array data representing the data, 
+    return whether it is a valid UTF-8 encoding 
+    (i.e. it translates to a sequence of valid UTF-8 encoded characters).
 """
+
 
 def validUTF8(data):
     """
-        Check that a sequence of byte values follows the UTF-8 encoding
-        rules.  Does not check for canonicalization (i.e. overlong encodings
-        are acceptable).
+        A character in UTF8 can be from 1 to 4 bytes long.
+        For a 1-byte character, the first bit is a 0, followed by its Unicode code.
+        For an n-bytes character, the first n bits are all one's, the n + 1 bit is 0, 
+        followed by n - 1 bytes with the most significant 2 bits being 10.
+
+        This is how the UTF-8 encoding would work:
+
+        _______________________________________________________________________________________
+        |                    Number of Bytes   |        UTF-8 Octet Sequence                  |
+        |                                      |              (binary)                        |
+        |               --------------------+-----------------------------------------        |
+        |                           1          |   0xxxxxxx                                   |
+        |                           2          |   110xxxxx 10xxxxxx                          |
+        |                           3          |   1110xxxx 10xxxxxx 10xxxxxx                 |
+        |                           4          |   11110xxx 10xxxxxx 10xxxxxx 10xxxxxx        |
+        |_____________________________________________________________________________________|
+
+                        x denotes a bit in the binary form of a byte that may be either 0 or 1.
     """
 
-    data = iter(data)
-    for leading_byte in data:
-        leading_ones = _count_leading_ones(leading_byte)
-        if leading_ones in [1, 7, 8]:
+    def check(num):
+        mask = 1 << (8 - 1)  # 10000000
+        i = 0
+        while num & mask:  # 11000110 & 100000
+            mask >>= 1
+            i += 1
+        return i
+
+    i = 0
+    while i < len(data):
+        j = check(data[i])
+        k = i + j - (j != 0)
+        i += 1
+        if j == 1 or j > 4 or k >= len(data):
             return False
-        for _ in range(leading_ones - 1):
-            trailing_byte = next(data, None)
-            if trailing_byte is None or trailing_byte >> 6 != 0b10:
-                return False
+        while i < len(data) and i <= k:
+            cur = check(data[i])
+            if cur != 1: return False
+            i += 1
     return True
-
-
-def _count_leading_ones(byte):
-    """Counts the leading ones."""
-
-    for i in range(8):
-        if byte >> 7 - i == 0b11111111 >> 7 - i & ~1:
-            return i
-    return 8 
