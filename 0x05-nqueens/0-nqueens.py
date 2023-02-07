@@ -1,59 +1,63 @@
 #!/usr/bin/python3
-"""Solution to the N-Queens puzzle"""
+"""
+    nqueen problem solution using backtracking, state space tree and bonding solution
+"""
 import sys
 
+def validate():
+    """
+        Validates the user input if it is valid (An Integer Greater Than 4)
+    """
+    if len(sys.argv) != 2:
+        print("Usage: nqueens N")
+        sys.exit(1)
+    elif not sys.argv[1].isnumeric():
+        print("N must be a number")
+        sys.exit(1)
+    elif int(sys.argv[1]) < 4:
+        print("N must be at least 4")
+        sys.exit(1)
+    return int(sys.argv[1])
 
-def print_board(board, n):
-    """prints allocated possitions to the queen"""
-    b = []
+def nqueens():
+    """
+        Calculates the possible positions for a Queen to avoid attacking by n - 1 Queens
+    """
+    n_val = validate()
+    col = set()
+    pos_diag = set() # (r_val + c_val)
+    neg_diag = set() # (r_val - c_val)
 
-    for i in range(n):
-        for j in range(n):
-            if j == board[i]:
-                b.append([i, j])
-    print(b)
+    fin_res = []
+    pos_sol = []
+
+    def backtrack(r_val):
+        if r_val == n_val:
+            fin_res.append(pos_sol.copy())
+            pos_sol.clear()
+            return
+
+        for c_val in range(n_val):
+            if c_val in col or (r_val + c_val) in pos_diag or (r_val - c_val) in neg_diag:
+                continue
+
+            col.add(c_val)
+            pos_diag.add(r_val + c_val)
+            neg_diag.add(r_val - c_val)
+            pos_sol.append([r_val, c_val])
+
+            backtrack(r_val + 1)
+
+            col.remove(c_val)
+            pos_diag.remove(r_val + c_val)
+            neg_diag.remove(r_val - c_val)
+            if pos_sol:
+                pos_sol.pop()
+
+    backtrack(0)
+    for res in fin_res:
+        print(res)
 
 
-def safe_position(board, i, j, r):
-    """Determines whether the position is safe for the queen"""
-    return board[i] in (j, j - i + r, i - r + j)
-
-
-def determine_positions(board, row, n):
-    """Recursively finds all safe positions where the queen can be allocated"""
-    if row == n:
-        print_board(board, n)
-
-    else:
-        for j in range(n):
-            allowed = True
-            for i in range(row):
-                if safe_position(board, i, j, row):
-                    allowed = False
-            if allowed:
-                board[row] = j
-                determine_positions(board, row + 1, n)
-
-
-def create_board(size):
-    """Generates the board"""
-    return [0 * size for i in range(size)]
-
-
-if len(sys.argv) != 2:
-    print("Usage: nqueens N")
-    exit(1)
-
-try:
-    n = int(sys.argv[1])
-except BaseException:
-    print("N must be a number")
-    exit(1)
-
-if (n < 4):
-    print("N must be at least 4")
-    exit(1)
-
-board = create_board(int(n))
-row = 0
-determine_positions(board, row, int(n))
+if __name__ == "__main__":
+    nqueens()
